@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="selected"></div>
+  </body>
+</html>
+<script>
+  const selected = document.getElementById("selected");
+  selectedData = JSON.parse(localStorage.getItem("selected"));
+  let originalData = JSON.parse(localStorage.getItem("data"));
+  //console.log(selectedData);
+  init();
+  function init() {
+    if (selectedData.length < 0) {
+      return;
+    }
+
+    for (let i = 0; i < selectedData.length; i++) {
+      //console.log(selectedData[i]);
+      let item = document.createElement("div");
+      item["data-id"] = selectedData[i].id;
+
+      item.innerText = selectedData[i];
+      let button = document.createElement("button");
+      button.innerText = "Remove";
+      button.id = selectedData[i].id;
+      button.addEventListener("click", deleteSeleted);
+      //button.onclick = `deleteSeleted(${selectedData[i].id},${item})`;
+      item.append(button);
+      selected.appendChild(item);
+    }
+  }
+
+  function deleteSeleted(id, element) {
+    console.log("onClick", this);
+    if (selectedData.length < 0) return;
+    for (let i = 0; i < selectedData.length; i++) {
+      if (selectedData[i].id == this.id) {
+        console.log("------");
+
+        originalData.push(selectedData.splice(i, 1));
+        this.parentNode.remove();
+        localStorage.setItem("selected", JSON.stringify(selectedData));
+        localStorage.setItem("data", JSON.stringify(originalData));
+      }
+    }
+    //selected.removeChild(element);
+  }
+  //selected.innerText = JSON.parse(selectedData);
+</script>
